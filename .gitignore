@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+.env.local
+apps/backend/uploads/*
+!apps/backend/uploads/.gitkeep
+apps/backend/eng.traineddata
+apps/frontend/dist/
+*.log
+.DS_Store
