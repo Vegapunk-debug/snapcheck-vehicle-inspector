@@ -1,0 +1,46 @@
+// snapcheck — Prisma schema.
+// Why SQLite: zero infra (no Docker, no Postgres install), single file, perfect for take-home scope.
+// Run `npx prisma migrate dev --name <change>` after editing this file.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Image {
+  id            String    @id
+  filename      String
+  storedPath    String
+  mimetype      String?
+  sizeBytes     Int?
+  sha256        String?
+  status        String    @default("pending")
+  failureReason String?
+  attempts      Int       @default(0)
+  createdAt     DateTime  @default(now())
+  startedAt     DateTime?
+  completedAt   DateTime?
+
+  results AnalysisResult[]
+
+  @@index([sha256])
+  @@index([status])
+}
+
+model AnalysisResult {
+  id         Int      @id @default(autoincrement())
+  imageId    String
+  checkName  String
+  passed     Boolean
+  confidence Float
+  details    String?
+  createdAt  DateTime @default(now())
+
+  image Image @relation(fields: [imageId], references: [id], onDelete: Cascade)
+
+  @@index([imageId])
+}
