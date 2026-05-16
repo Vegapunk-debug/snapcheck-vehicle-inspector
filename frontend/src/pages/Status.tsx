@@ -146,6 +146,7 @@ export default function Status() {
 
             <div className="status-meta">
               <span>Attempts: <strong>{statusData.attempts}</strong></span>
+            </div>
           </div>
         </div>
 
