@@ -1,5 +1,7 @@
 // Typed API client. Paths are relative — proxied to backend by Vite in dev.
 
+const API_BASE = import.meta.env.VITE_API_URL || "";
+
 export type JobStatus = "pending" | "processing" | "completed" | "failed";
 
 export interface UploadResponse {
@@ -74,17 +76,17 @@ async function jsonOrThrow<T>(res: Response): Promise<T> {
 export async function uploadImage(file: File): Promise<UploadResponse> {
   const form = new FormData();
   form.append("image", file);
-  const res = await fetch("/api/upload", { method: "POST", body: form });
+  const res = await fetch(`${API_BASE}/api/upload`, { method: "POST", body: form });
   return jsonOrThrow<UploadResponse>(res);
 }
 
 export async function getStatus(jobId: string): Promise<StatusResponse> {
-  const res = await fetch(`/api/status/${jobId}`);
+  const res = await fetch(`${API_BASE}/api/status/${jobId}`);
   return jsonOrThrow<StatusResponse>(res);
 }
 
 export async function getResults(jobId: string): Promise<ResultsResponse | null> {
-  const res = await fetch(`/api/results/${jobId}`);
+  const res = await fetch(`${API_BASE}/api/results/${jobId}`);
   if (res.status === 409) return null; // not ready yet
   return jsonOrThrow<ResultsResponse>(res);
 }
@@ -94,20 +96,20 @@ export async function listJobs(opts: { status?: JobStatus; limit?: number } = {}
   if (opts.status) params.set("status", opts.status);
   if (opts.limit) params.set("limit", String(opts.limit));
   const qs = params.toString();
-  const res = await fetch(`/api/jobs${qs ? `?${qs}` : ""}`);
+  const res = await fetch(`${API_BASE}/api/jobs${qs ? `?${qs}` : ""}`);
   return jsonOrThrow<JobsResponse>(res);
 }
 
 export async function getStats(): Promise<StatsResponse> {
-  const res = await fetch("/api/stats");
+  const res = await fetch(`${API_BASE}/api/stats`);
   return jsonOrThrow<StatsResponse>(res);
 }
 
 export async function getHealth(): Promise<{ status: string; checks: Record<string, string> }> {
-  const res = await fetch("/health");
+  const res = await fetch(`${API_BASE}/health`);
   return res.json();
 }
 
 export function imageUrl(jobId: string): string {
-  return `/api/image/${jobId}`;
+  return `${API_BASE}/api/image/${jobId}`;
 }
