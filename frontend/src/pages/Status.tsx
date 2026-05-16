@@ -146,8 +146,11 @@ export default function Status() {
 
             <div className="status-meta">
               <span>Attempts: <strong>{statusData.attempts}</strong></span>
-            </div>
           </div>
+        </div>
+
+        <div className="detail-section detail-cta">
+          <Link to="/" className="btn">Upload another →</Link>
         </div>
       </div>
     </div>
