@@ -79,7 +79,9 @@ async function runImageAnalysis(imageId: string): Promise<void> {
     return;
   }
 
-  // Run all six checks in parallel. Promise.allSettled means a single
+  checkBlur(imageBuffer),
+    checkDuplicate(imageId, image.sha256),
+    // Run all six checks in parallel. Promise.allSettled means a single
   // failing check does NOT abort the others.
   const checkResults = await Promise.allSettled([
     
