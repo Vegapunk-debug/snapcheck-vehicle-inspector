@@ -1,4 +1,4 @@
-# snapcheck
+# snapCheck
 
 Async image inspection pipeline. Upload a vehicle image — get back seven structured checks (blur, brightness, duplicate, plate, screenshot, dimensions, tampering) processed through an in-memory queue.
 
