@@ -1,6 +1,6 @@
 <div align="center">
 
-# snapCheck
+# SnapCheck
 
 <img src="https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white"/>
 <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white"/>
@@ -24,7 +24,7 @@ Upload an image — get back 7 structured checks processed through an in-memory 
 
 ## Table of Contents
 
-- [Stack](#stack)
+- [Tech Stack](#stack)
 - [Getting Started](#getting-started)
 - [API Reference](#api-reference)
 - [Architecture](#architecture)
@@ -36,7 +36,7 @@ Upload an image — get back 7 structured checks processed through an in-memory 
 
 ---
 
-## Stack
+## Tech Stack
 
 | Layer            | Choice                                            |
 | ---------------- | ------------------------------------------------- |
@@ -357,3 +357,5 @@ To change the schema edit `prisma/schema.prisma` and run `npx prisma migrate dev
 | **Docker setup** | **Included** | Provided `docker-compose.yml` for local Postgres testing. |
 | **Seed script** | Not included | Would live at `backend/prisma/seed.ts`. |
 | **Test scripts** | Not included | Would add Vitest unit tests and Supertest smoke tests. |
+
+# Thank You !
