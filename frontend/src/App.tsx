@@ -1,4 +1,4 @@
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getHealth } from "./api";
 
@@ -7,6 +7,9 @@ type HealthState = "loading" | "ok" | "down";
 const POLL_INTERVAL_MS = 15_000;
 
 export default function App() {
+  const location = useLocation();
+  const isHome = location.pathname === "/";
+
   const [healthState, setHealthState] = useState<HealthState>("loading");
   const [healthMessage, setHealthMessage] = useState("checking…");
 
@@ -68,8 +71,8 @@ export default function App() {
         </Link>
 
         <nav className="topbar-nav">
-          <NavLink to="/" end className={({ isActive }) => `nav-link ${isActive ? "is-active" : ""}`}>
-            Upload
+          <NavLink to="/" end className={({ isActive }) => isHome ? `nav-link ${isActive ? "is-active" : ""}` : "btn"} style={!isHome ? { padding: "6px 14px", fontSize: "12px", height: "fit-content", alignSelf: "center" } : {}}>
+            {isHome ? "Upload" : "Upload another →"}
           </NavLink>
         </nav>
 

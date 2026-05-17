@@ -181,10 +181,6 @@ export default function Results() {
             <dt>attempts</dt><dd>{status.attempts}</dd>
           </dl>
         </div>
-
-        <div className="detail-section detail-cta">
-          <Link to="/" className="btn">Upload another →</Link>
-        </div>
       </div>
     </div>
   );

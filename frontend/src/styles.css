@@ -86,8 +86,8 @@ button { font-family: inherit; }
 .page { max-width: 1480px; margin: 0 auto; padding: 32px 36px 60px; }
 .layout {
   display: grid;
-  grid-template-columns: minmax(360px, 480px) 1fr;
-  gap: 24px;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 32px;
   align-items: flex-start;
 }
 .layout.single { grid-template-columns: 1fr; max-width: 1100px; margin: 0 auto; }
@@ -99,6 +99,11 @@ button { font-family: inherit; }
 }
 
 /* ---------- card (white + orange offset shadow tab) ---------- */
+@keyframes cardEnter {
+  from { opacity: 0; transform: translateY(15px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 .card {
   background: var(--card);
   border: 1.5px solid var(--text);
@@ -106,7 +111,10 @@ button { font-family: inherit; }
   padding: 22px;
   box-shadow: var(--shadow-tab);
   position: relative;
+  animation: cardEnter 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
+.card:nth-child(2) { animation-delay: 0.1s; }
+.card:nth-child(3) { animation-delay: 0.2s; }
 .card-title {
   margin: 0 0 4px;
   font-size: 11px; font-weight: 700;
@@ -123,7 +131,7 @@ button { font-family: inherit; }
 /* ---------- dropzone ---------- */
 .dropzone {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  padding: 38px 18px; border-radius: var(--radius-sm);
+  padding: 80px 24px; border-radius: var(--radius-sm);
   border: 1.5px dashed var(--border-strong);
   background: var(--bg-elev);
   cursor: pointer; text-align: center;
@@ -131,7 +139,14 @@ button { font-family: inherit; }
 }
 .dropzone:hover { border-color: var(--accent); background: var(--accent-soft); }
 .dropzone.is-over { border-color: var(--accent); background: var(--accent-soft); transform: scale(1.01); }
-.dropzone-icon { color: var(--accent); margin-bottom: 12px; }
+.dropzone-icon {
+  color: var(--accent);
+  margin-bottom: 12px;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.dropzone:hover .dropzone-icon {
+  transform: translateY(-4px) scale(1.1);
+}
 .dropzone-title { font-size: 15px; font-weight: 600; color: var(--text); }
 .dropzone-sub { font-size: 13px; color: var(--text-dim); margin-top: 2px; }
 .dropzone-shortcut { font-size: 11px; color: var(--text-faint); margin-top: 12px; }
@@ -149,7 +164,18 @@ kbd {
   background: #fff; border: 1.5px solid var(--text);
   box-shadow: 4px 4px 0 var(--accent);
   text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  animation: cardEnter 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
+.stat:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--accent);
+}
+.stat:nth-child(1) { animation-delay: 0.1s; }
+.stat:nth-child(2) { animation-delay: 0.15s; }
+.stat:nth-child(3) { animation-delay: 0.2s; }
+.stat:nth-child(4) { animation-delay: 0.25s; }
+.stat:nth-child(5) { animation-delay: 0.3s; }
 .stat-num { font-size: 24px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; color: var(--accent); }
 .stat-label { font-size: 10px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; font-weight: 600; }
 .stat-yellow .stat-num { color: var(--yellow); }
