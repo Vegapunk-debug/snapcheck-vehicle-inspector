@@ -88,7 +88,7 @@ snapcheck/
 ### Prerequisites
 
 - Node.js >= 20
-- A Postgres connection string — easiest is a free [Neon](https://neon.tech) project. No local Postgres install required.
+- A Postgres database. You can either use a free [Neon](https://neon.tech) project OR run it locally using Docker (a `docker-compose.yml` is provided).
 
 ### Install and run
 
@@ -98,7 +98,14 @@ npm install
 
 # 1. Set the connection string
 cp backend/.env.example backend/.env
+
+# Option A: Cloud Database (No Docker required)
 # Open backend/.env and paste your Neon URL into DATABASE_URL
+
+# Option B: Local Database via Docker
+docker compose up -d
+# Then open backend/.env and set:
+# DATABASE_URL="postgresql://snapcheck:password@localhost:5432/snapcheck_db?schema=public"
 
 # 2. Apply the schema migration to your database
 npm run db:migrate
