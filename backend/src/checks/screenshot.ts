@@ -15,6 +15,10 @@ const SCREEN_SIZES = new Set([
   "390x844",
   "414x896",
   "375x667",
+  "3024x1964", // MacBook Pro 14"
+  "3456x2234", // MacBook Pro 16"
+  "2880x1800", // MacBook Pro 15"
+  "2560x1600", // MacBook Pro 13"
 ]);
 
 type Result = {
@@ -42,20 +46,23 @@ export async function checkScreenshot(buffer: Buffer): Promise<Result> {
 
     const noExifData = !info.exif;
     const matchesScreenSize = SCREEN_SIZES.has(size);
-    const isScreenshot = noExifData && matchesScreenSize;
+    
+    // MacOS embeds metadata in PNG screenshots, so we don't strictly require noExifData
+    // if it perfectly matches a monitor resolution.
+    const isScreenshot = matchesScreenSize;
 
     if (isScreenshot) {
       return {
         passed: false,
-        confidence: 0.75,
-        details: `Looks like a screenshot — no EXIF and size ${size} matches a screen resolution`,
+        confidence: 0.8,
+        details: `Looks like a screenshot — exact match for monitor resolution ${size}`,
       };
     }
 
     return {
       passed: true,
       confidence: 0.6,
-      details: `Not a screenshot — size ${size}, EXIF: ${info.exif ? "present" : "missing"}`,
+      details: `Not a screenshot — size ${size} doesn't match known monitors`,
     };
   } catch (error) {
     console.error("[screenshot] failed to read image:", error);
