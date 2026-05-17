@@ -22,6 +22,20 @@ Upload an image — get back 7 structured checks processed through an in-memory 
 
 ---
 
+## Table of Contents
+
+- [Stack](#stack)
+- [Getting Started](#getting-started)
+- [API Reference](#api-reference)
+- [Architecture](#architecture)
+- [Image Analysis Checks](#image-analysis-checks)
+- [Database Schema](#database-schema)
+- [Trade-offs](#trade-offs)
+- [AI Usage Disclosure](#ai-usage-disclosure)
+- [Bonus items](#bonus-items)
+
+---
+
 ## Stack
 
 | Layer            | Choice                                            |
