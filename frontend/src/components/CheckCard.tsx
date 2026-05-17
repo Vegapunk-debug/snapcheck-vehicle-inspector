@@ -9,7 +9,7 @@ const CHECK_DISPLAY_NAMES: Record<string, string> = {
   ocr_plate_check: "Plate (OCR)",
   dimension_validation: "Dimensions",
   screenshot_detection: "Screenshot",
-  
+  tamper_detection: "Tampering",
 };
 
 type Outcome = "pass" | "fail";
