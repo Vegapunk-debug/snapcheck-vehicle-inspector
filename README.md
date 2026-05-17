@@ -4,6 +4,8 @@ Async image inspection pipeline. Upload a vehicle image — get back seven struc
 
 Built as a take-home for Ginger Media Group.
 
+**🚀 Live Demo:** [https://snapcheck-frontend-production.up.railway.app](https://snapcheck-frontend-production.up.railway.app)
+
 ---
 
 ## Table of Contents
@@ -322,7 +324,7 @@ A single check throwing inside `Promise.allSettled` does not fail the job — it
 | `blur_detection`        | Sharp `.stats()` — mean channel stdev, threshold 15                       | `checks/blur.ts`         |
 | `brightness_analysis`   | Mean pixel value across channels; fail if `<40` or `>220`                 | `checks/brightness.ts`   |
 | `duplicate_detection`   | Indexed SQL lookup on `sha256` for a different existing row               | `checks/duplicate.ts`    |
-| `ocr_plate_check`       | Filename regex `^[A-Z]{2}\d{1,2}[A-Z]{1,3}\d{4}$` + aspect-ratio sanity   | `checks/plate.ts`        |
+| `ocr_plate_check`       | Real OCR via `tesseract.js` to find Indian plate regex matches            | `checks/plate.ts`        |
 | `screenshot_detection`  | No EXIF block + dimensions match a common screen resolution               | `checks/screenshot.ts`   |
 | `dimension_validation`  | Reject `<200px` or `>6000px` on either side                               | `checks/dimensions.ts`   |
 | `tamper_detection`      | JPEG-with-no-EXIF + unusual aspect ratio + DPI exactly 72/96              | `checks/tamper.ts`       |
@@ -333,7 +335,7 @@ Every check returns `{ passed: boolean, confidence: number, details: string }`.
 
 - **Deterministic checks** (`duplicate_detection`, `dimension_validation`) return `1.0` — there's nothing uncertain.
 - **Heuristic checks** (`blur`, `brightness`, `screenshot`) scale `0..1` based on distance from the threshold.
-- **`ocr_plate_check`** returns `0.6 / 0.8` depending on whether aspect ratio reinforces a regex match — a real-OCR substitute would replace this with Tesseract confidence.
+- **`ocr_plate_check`** returns confidence based on the Tesseract engine's confidence output, with a fallback heuristic for filename matches.
 - **`tamper_detection`** sums independent signals (no-EXIF, odd aspect, editor DPI) — `0.7` when clean, `0.4 + 0.2×signals` otherwise (capped at `1.0`).
 
 The frontend Results page computes a *weighted quality score* across checks for at-a-glance triage (see `frontend/src/pages/Results.tsx`).
@@ -385,7 +387,6 @@ To change the schema: edit `prisma/schema.prisma`, then `npx prisma migrate dev 
 ## Trade-offs
 
 ### Simplified intentionally
-- **No real OCR.** Tesseract.js has a 5–15 s cold start that dominates the first job. The plate heuristic uses a filename regex + aspect-ratio sanity check — enough to demonstrate the pipeline, not enough for production.
 - **No retry logic.** A worker exception logs and the job is marked `failed`. No exponential backoff, no attempts cap — the database column exists but is only incremented to `1`.
 - **No rate limiting** or **authentication**.
 - **`console.log`** instead of structured logging.
