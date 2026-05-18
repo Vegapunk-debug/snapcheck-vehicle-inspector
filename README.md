@@ -23,8 +23,8 @@ Upload an image — get back 7 structured checks processed through an in-memory 
 <div align="center">
   <img src="./demo/snapp.gif" alt="SnapCheck Demo Walkthrough GIF" width="800" />
   <br /><br />
-  <!-- Replace the src below with the name of your video file once uploaded -->
-  <video src="./demo/demo-video.mp4" controls width="800"></video>
+  <!-- Replace the href below with your Google Drive link -->
+  <h3>🎥 <a href="YOUR_DRIVE_LINK_HERE">Watch the High-Quality Full Demo Video</a></h3>
 </div>
 
 ---
