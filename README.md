@@ -20,6 +20,45 @@ Upload an image — get back 7 structured checks processed through an in-memory 
 
 </div>
 
+<br />
+
+<table>
+  <tr height="160px">
+    <td width="30%" valign="top">
+      <h2>Async Processing</h2><br />
+      Upload an image and let the in-memory queue handle the pipeline seamlessly.
+    </td>
+    <td width="40%" align="center" valign="top" rowspan="3">
+      <img src="./demo/snapcheck-demo.gif" alt="SnapCheck Demo Walkthrough" width="260" /><br /><br />
+      <h2>SnapCheck Demo Walkthrough</h2>
+    </td>
+    <td width="30%" valign="top">
+      <h2>7 Heuristic Checks</h2><br />
+      Detects blur, brightness, duplicates, and tampering alongside Tesseract OCR.
+    </td>
+  </tr>
+  <tr height="160px">
+    <td valign="top">
+      <h2>Real-time Status</h2><br />
+      Poll for job status and get updates as the worker processes your image.
+    </td>
+    <td valign="top">
+      <h2>BH Series Support</h2><br />
+      Advanced OCR capable of reading both standard and Indian Bharat (BH) plates.
+    </td>
+  </tr>
+  <tr height="160px">
+    <td valign="top">
+      <h2>Clean UI/UX</h2><br />
+      Built with React & Vite featuring a sleek, responsive design and smooth animations.
+    </td>
+    <td valign="top">
+      <h2>Zero Dependencies</h2><br />
+      Uses a native Node.js EventEmitter, eliminating the need for Redis locally.
+    </td>
+  </tr>
+</table>
+
 ---
 
 ## Table of Contents
@@ -222,7 +261,7 @@ A single check throwing inside `Promise.allSettled` does not fail the job. It wr
 <td><strong>duplicate_detection</strong><br/>SHA256 DB lookup<br/><code>confidence: 1.0</code></td>
 </tr>
 <tr>
-<td><strong>ocr_plate_check</strong><br/>Real OCR via Tesseract.js<br/><code>confidence: 0.7–1.0</code></td>
+<td><strong>ocr_plate_check</strong><br/>Real OCR via Tesseract.js & API fallback (Standard & BH Series plates)<br/><code>confidence: 0.7–1.0</code></td>
 <td><strong>screenshot_detection</strong><br/>No EXIF + screen dims<br/><code>confidence: 0.75</code></td>
 <td><strong>dimension_validation</strong><br/>200px – 6000px bounds<br/><code>confidence: 1.0</code></td>
 </tr>
@@ -237,7 +276,7 @@ A single check throwing inside `Promise.allSettled` does not fail the job. It wr
 
 - **Deterministic checks** return `1.0`.
 - **Heuristic checks** scale `0..1` based on distance from the threshold.
-- **`ocr_plate_check`** returns confidence based on the Tesseract engine's confidence output, with a fallback heuristic.
+- **`ocr_plate_check`** returns confidence based on the Tesseract engine's confidence output, falling back to the PlateRecognizer API and filename heuristics if OCR fails. It detects both Standard and Bharat Series (BH) plates.
 - **`tamper_detection`** sums independent signals and caps at `1.0`.
 
 ---

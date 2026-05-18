@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 import { getResults, getStatus, imageUrl, type ResultsResponse, type StatusResponse } from "../api";
 import { StatusBadge } from "../components/StatusBadge";
 import { ScoreGauge } from "../components/ScoreGauge";
@@ -31,8 +31,11 @@ const COPY_FLASH_MS = 1_200;
 export default function Results() {
   const { jobId } = useParams<{ jobId: string }>();
 
+  const location = useLocation();
   const [results, setResults] = useState<ResultsResponse | null>(null);
-  const [status, setStatus] = useState<StatusResponse | null>(null);
+  const [status, setStatus] = useState<StatusResponse | null>(
+    (location.state as any)?.statusData || null
+  );
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
@@ -115,10 +118,13 @@ export default function Results() {
             <img
               src={imageUrl(status.jobId)}
               alt=""
-              onError={(event) =>
-                (event.currentTarget.parentElement!.innerHTML =
-                  "<div class='preview-loading'>(no preview)</div>")
-              }
+              onError={(event) => {
+                event.currentTarget.style.display = "none";
+                const errDiv = document.createElement("div");
+                errDiv.className = "preview-loading";
+                errDiv.textContent = "(no preview)";
+                event.currentTarget.parentElement?.appendChild(errDiv);
+              }}
             />
           </div>
           <div className="score-block">
@@ -150,7 +156,9 @@ export default function Results() {
         {!isFailed && (
           <div className="detail-section">
             <div className="detail-section-title">Issues detected</div>
-            {issueLabels.length ? (
+            {!results ? (
+              <div className="no-issues" style={{ color: "var(--text-faint)" }}>Analyzing...</div>
+            ) : issueLabels.length ? (
               <div className="issues">
                 {issueLabels.map((label) => <IssueChip key={label} text={label} />)}
               </div>
@@ -160,13 +168,17 @@ export default function Results() {
           </div>
         )}
 
-        {results && results.results.length > 0 && (
+        {(!results || results.results.length > 0) && (
           <div className="detail-section">
-            <div className="detail-section-title">Checks ({results.results.length})</div>
+            <div className="detail-section-title">Checks {!results ? "..." : `(${results.results.length})`}</div>
             <div className="checks">
-              {results.results.map((checkResult) => (
-                <CheckCard key={checkResult.check} check={checkResult} />
-              ))}
+              {!results ? (
+                <div style={{ color: "var(--text-faint)", padding: "12px 0" }}>Loading check details...</div>
+              ) : (
+                results.results.map((checkResult) => (
+                  <CheckCard key={checkResult.check} check={checkResult} />
+                ))
+              )}
             </div>
           </div>
         )}

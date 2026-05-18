@@ -28,7 +28,7 @@ export default function Status() {
         setStatusData(latestStatus);
 
         if (latestStatus.status === "completed" || latestStatus.status === "failed") {
-          navigate(`/results/${jobId}`, { replace: true });
+          navigate(`/results/${jobId}`, { replace: true, state: { statusData: latestStatus } });
         }
       } catch (error) {
         if (!isCancelled) setErrorMessage((error as Error).message);
