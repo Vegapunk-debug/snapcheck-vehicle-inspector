@@ -24,6 +24,7 @@ const ISSUE_LABELS: Record<string, string> = {
   ocr_plate_check: "invalid or missing plate",
   dimension_validation: "image too small",
   screenshot_detection: "possible screenshot",
+  tamper_detection: "possible tampering",
 };
 
 const COPY_FLASH_MS = 1_200;
@@ -71,6 +72,15 @@ export default function Results() {
     return results.results
       .filter((checkResult) => !checkResult.passed)
       .map((checkResult) => ISSUE_LABELS[checkResult.check] ?? checkResult.check);
+  }, [results]);
+
+  const validPlateMsg = useMemo(() => {
+    if (!results) return null;
+    const plateCheck = results.results.find((c) => c.check === "ocr_plate_check");
+    if (plateCheck && plateCheck.passed) {
+      return plateCheck.details;
+    }
+    return null;
   }, [results]);
 
   if (errorMessage) {
@@ -155,15 +165,22 @@ export default function Results() {
 
         {!isFailed && (
           <div className="detail-section">
-            <div className="detail-section-title">Issues detected</div>
+            <div className="detail-section-title">Status Overview</div>
             {!results ? (
               <div className="no-issues" style={{ color: "var(--text-faint)" }}>Analyzing...</div>
-            ) : issueLabels.length ? (
-              <div className="issues">
-                {issueLabels.map((label) => <IssueChip key={label} text={label} />)}
-              </div>
             ) : (
-              <div className="no-issues">no issues detected — image looks good</div>
+              <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", alignItems: "center" }}>
+                {validPlateMsg && (
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "rgba(34, 197, 94, 0.15)", color: "var(--green)", padding: "6px 12px", borderRadius: "99px", fontSize: "13px", fontWeight: 600 }}>
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                    {validPlateMsg}
+                  </span>
+                )}
+                {issueLabels.map((label) => <IssueChip key={label} text={label} />)}
+                {issueLabels.length === 0 && !validPlateMsg && (
+                  <div className="no-issues" style={{ padding: 0, background: "transparent" }}>no issues detected — image looks good</div>
+                )}
+              </div>
             )}
           </div>
         )}

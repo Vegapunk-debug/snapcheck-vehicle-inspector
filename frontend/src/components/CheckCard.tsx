@@ -3,7 +3,7 @@ import type { CheckRow } from "../api";
 
 // Display name per backend check id.
 const CHECK_DISPLAY_NAMES: Record<string, string> = {
-  blur_detection: "Blur",
+  blur_detection: "Full-Image Blur",
   brightness_analysis: "Brightness",
   duplicate_detection: "Duplicate",
   ocr_plate_check: "Plate (OCR)",

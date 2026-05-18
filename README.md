@@ -20,44 +20,9 @@ Upload an image — get back 7 structured checks processed through an in-memory 
 
 </div>
 
-<br />
-
-<table>
-  <tr height="160px">
-    <td width="30%" valign="top">
-      <h2>Async Processing</h2><br />
-      Upload an image and let the in-memory queue handle the pipeline seamlessly.
-    </td>
-    <td width="40%" align="center" valign="top" rowspan="3">
-      <img src="./demo/snapcheck-demo.gif" alt="SnapCheck Demo Walkthrough" width="260" /><br /><br />
-      <h2>SnapCheck Demo Walkthrough</h2>
-    </td>
-    <td width="30%" valign="top">
-      <h2>7 Heuristic Checks</h2><br />
-      Detects blur, brightness, duplicates, and tampering alongside Tesseract OCR.
-    </td>
-  </tr>
-  <tr height="160px">
-    <td valign="top">
-      <h2>Real-time Status</h2><br />
-      Poll for job status and get updates as the worker processes your image.
-    </td>
-    <td valign="top">
-      <h2>BH Series Support</h2><br />
-      Advanced OCR capable of reading both standard and Indian Bharat (BH) plates.
-    </td>
-  </tr>
-  <tr height="160px">
-    <td valign="top">
-      <h2>Clean UI/UX</h2><br />
-      Built with React & Vite featuring a sleek, responsive design and smooth animations.
-    </td>
-    <td valign="top">
-      <h2>Zero Dependencies</h2><br />
-      Uses a native Node.js EventEmitter, eliminating the need for Redis locally.
-    </td>
-  </tr>
-</table>
+<div align="center">
+  <img src="./demo/snapp.gif" alt="SnapCheck Demo Walkthrough" width="800" />
+</div>
 
 ---
 
