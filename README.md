@@ -21,7 +21,10 @@ Upload an image — get back 7 structured checks processed through an in-memory 
 </div>
 
 <div align="center">
-  <img src="./demo/snapp.gif" alt="SnapCheck Demo Walkthrough" width="800" />
+  <img src="./demo/snapp.gif" alt="SnapCheck Demo Walkthrough GIF" width="800" />
+  <br /><br />
+  <!-- Replace the src below with the name of your video file once uploaded -->
+  <video src="./demo/demo-video.mp4" controls width="800"></video>
 </div>
 
 ---
